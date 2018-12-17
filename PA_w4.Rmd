@@ -1,0 +1,52 @@
+---
+title: 'PA: Course Project: Shiny Application and Reproducible Pitch'
+author: "Tomoki Ito"
+date: "`r format(Sys.time(), '%Y/%m/%d')`"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Individual household electric power consumption Data Set
+
+Data Set Information:
+
+This archive contains 2075259 measurements gathered in a house located in Sceaux (7km of Paris, France) between December 2006 and November 2010 (47 months).
+
+For more details on [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/individual+household+electric+power+consumption)
+
+
+## loading library and reading Dataset 
+
+```{r echo = TRUE,message=FALSE,warning=FALSE}
+library(tidyverse)
+library(lubridate)
+library(tibbletime)
+library(plotly)
+library(rsconnect)
+```
+
+```{r echo = TRUE,cache=TRUE}
+# Read data
+mydata <- read.table("household_power_consumption.txt",
+                     header=T,na.strings="?",sep=";") %>%
+                     as_data_frame
+# Select dates from "2007-01-01" to "2007-12-31"
+mydata2 <- mydata %>% 
+        mutate(Date = dmy_hms(paste(mydata$Date,mydata$Time))) %>% 
+        as_tbl_time(index = Date) %>% 
+        select(-Time) %>% 
+        filter_time(time_formula = "2007-01-01" ~ "2007-12-31")
+
+```
+
+## Shiny Application
+the Link for the Application.  
+https://tomokiito-course.shinyapps.io/pa_w4/
+
+the link for github repo.  
+https://github.com/tomokiito/Shiny-Application-and-Reproducible-Pitch
+
+## Thank you!
